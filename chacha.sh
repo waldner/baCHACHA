@@ -225,7 +225,7 @@ CHACHA_init(){
     CHACHA_state[12]=$CHACHA_counter
     CHACHA_state[13]=0
   else
-    CHACHA_state[12]=$(( 16#ffffffff ))
+    CHACHA_state[12]=$(( CHACHA_counter & 16#ffffffff ))
     CHACHA_state[13]=$(( CHACHA_counter >> 32 ))
   fi
 
