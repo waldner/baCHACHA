@@ -68,13 +68,13 @@ CHACHA_output_base64(){
   local -n array=$1
   local last=$2
 
-  for ((i = 0; i < $last; i++)); do
+  for ((i = 0; i < last; i++)); do
     if [ $CHACHA_base64_index -eq 0 ]; then
       CHACHA_base64_print "${CHACHA_base64_table[${array[i]} >> 2]}"
-      CHACHA_base64_left=$(( (${array[i]} & 3) << 4))
+      CHACHA_base64_left=$(( (array[i] & 3) << 4))
     elif [ $CHACHA_base64_index -eq 1 ]; then
       CHACHA_base64_print "${CHACHA_base64_table[$CHACHA_base64_left + (${array[i]} >> 4)]}"
-      CHACHA_base64_left=$(( (${array[i]} & 15) << 2 ))
+      CHACHA_base64_left=$(( (array[i] & 15) << 2 ))
     elif [ $CHACHA_base64_index -eq 2 ]; then
       CHACHA_base64_print "${CHACHA_base64_table[$CHACHA_base64_left + (${array[i]} >> 6)]}"
       CHACHA_base64_print "${CHACHA_base64_table[${array[i]} & 63]}"
@@ -173,7 +173,6 @@ CHACHA_init(){
 
   local hex_key=$1
   local hex_iv=$2
-  local counter=$3
   local key_length iv_length i j tmp
 
   # check key length
@@ -334,7 +333,7 @@ CHACHA_do_encrypt(){
 
   done
 
-  if [ $CHACHA_output_format = "base64" ]; then
+  if [ "$CHACHA_output_format" = "base64" ]; then
     CHACHA_output_base64_finalize   # this needs no args
   fi
 }
