@@ -152,9 +152,11 @@ CHACHA_read_input(){
 CHACHA_output_raw(){
   local -n array=$1
   local last=$2
+  local s
 
   if [ $last -gt 0 ]; then
-    printf "$(printf '\\x%x' "${array[@]:0:$last}")"
+    printf -v s '\\x%x' "${array[@]:0:$last}"
+    printf "$s"
   fi
 }
 
